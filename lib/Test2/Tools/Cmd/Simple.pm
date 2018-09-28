@@ -17,8 +17,7 @@ our @EXPORT = qw(test_cmd);
 sub test_cmd {
     my %args = @_;
 
-    my $ctx = context();
-
+    my $ctx;
     my $code = sub {
         system $args{cmd};
         my $has_tests;
@@ -36,6 +35,7 @@ sub test_cmd {
         $ctx->ok(1, "no tests") unless $has_tests;
     };
 
+    my $ctx = context();
     my $pass = run_subtest($args{name}, $code, {buffered=>0});
     $ctx->release;
     $pass;
